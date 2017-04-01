@@ -37,16 +37,46 @@
           zoom: 4,
           center: uluru
         });        
-        /** var marker = new google.maps.Marker({
+        var marker = new google.maps.Marker({
           position: uluru,
           map: map
-        }); **/
+        });
+        var marker = new google.maps.Marker({
+          position: {lat: -15.000, lng: 131.100},
+          map: map
+        });
       }
     </script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh3Ji_jBNmp5cxuzTrqqofoq4vTc_K4y0&callback=initMap">
     </script>
    
+<script src="https://www.gstatic.com/firebasejs/3.7.4/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyD2JcSU0JFCPws3GD0yjOBesZVG4Yf2Ris",
+    authDomain: "trash-5388a.firebaseapp.com",
+    databaseURL: "https://trash-5388a.firebaseio.com",
+    projectId: "trash-5388a",
+    storageBucket: "trash-5388a.appspot.com",
+    messagingSenderId: "401042773208"
+  };
+  firebase.initializeApp(config);
+
+  var database = firebase.database();
+
+    database.ref('bins/' + '15/65/77').set({
+    long: '35',
+    lat: '65',
+    isEmpty : true
+  });
+
+    var starCountRef = database.ref('bins/' + '15/65/77');
+    starCountRef.on('value', function(snapshot) {
+    updateStarCount(postElement, snapshot.val());
+});
+</script>
    
 </body>
 </html>
