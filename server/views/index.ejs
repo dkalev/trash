@@ -30,26 +30,8 @@
   </div>
 </div>
  
-    <script>
-      function initMap() {
-        var uluru = {lat: -15.363, lng: 131.044};
-        var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 4,
-          center: uluru
-        });        
-        var marker = new google.maps.Marker({
-          position: uluru,
-          map: map
-        });
-        var marker = new google.maps.Marker({
-          position: {lat: -15.000, lng: 131.100},
-          map: map
-        });
-      }
-    </script>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh3Ji_jBNmp5cxuzTrqqofoq4vTc_K4y0&callback=initMap">
-    </script>
+    
+    
    
 <script src="https://www.gstatic.com/firebasejs/3.7.4/firebase.js"></script>
 <script>
@@ -65,17 +47,28 @@
   firebase.initializeApp(config);
 
   var database = firebase.database();
-
-    database.ref('bins/' + '15/65/77').set({
-    long: '35',
-    lat: '65',
-    isEmpty : true
-  });
-
-    var starCountRef = database.ref('bins/' + '15/65/77');
-    starCountRef.on('value', function(snapshot) {
-    updateStarCount(postElement, snapshot.val());
-});
+      function initMap() {
+        var uluru = {lat: -15.363, lng: 131.044};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 4,
+          center: uluru
+        });        
+        var starCountRef = database.ref('bins');
+        starCountRef.on('value', function(snapshot) {
+          snapshot.forEach(function (snapChild) {
+            new google.maps.Marker({
+            position: {lat: parseInt(snapChild.val().lat), lng: parseInt(snapChild.val().long)},
+            map: map
+            });
+            console.log(snapChild.val());
+          });
+        });
+   
+      }
+    
+</script>
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh3Ji_jBNmp5cxuzTrqqofoq4vTc_K4y0&callback=initMap">
 </script>
    
 </body>
