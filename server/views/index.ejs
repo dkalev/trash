@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Team Trash</title>
+  <title>Team Bin</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -13,16 +13,18 @@
  
  
 <div class="jumbotron text-center">
-  <h1>Team Trash - MLH Project</h1>
-  <p>Cleaning up stuff.</p>
+  <h1>Team Bin - MLH Prime Regional</h1>
+  <p>Cleaning up stuff since 2017. But only when we have to.</p>
 </div>
  
 <div class="container">
   <div class="row">
     <div class="col-sm-4">
-      <h3>Trash can statistics</h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
+      <h3>Trash can data</h3>
+      <p>Clean Bin aims to maximize efficiency and minimize resources spent when it comes to changing the bags of public garbage bins.</p>
+      <br>
+      <p id="fbins"></p>
+      <p id ="ebins"></p>
     </div>
     <div class="col-sm-8">
       <div id="map" style="width:100%;height:500px;"></div>
@@ -47,17 +49,18 @@
   firebase.initializeApp(config);
 
   var database = firebase.database();
+  var emptyCount = 0;
+  var fullCount = 0;
       function initMap() {
         var uluru = {lat: 51.52, lng: -0.086};
         var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 15,
+          zoom: 16,
           center: uluru
         });       
         var markers = [];
         var starCountRef = database.ref('bins');
 
         starCountRef.on('value', function(snapshot) {
-          console.log('bruh');
           console.log(markers.size);
           if(markers.size != 0){
             for(m in markers){
@@ -75,6 +78,10 @@
               fillOpacity: 1,
               scale: 5
               };
+              if(map.getBounds().contains(snapChild.val().geolocation.location)){
+                emptyCount++;
+              }
+              console.log(emptyCount);
             }else{
               var icon = {
               path: google.maps.SymbolPath.CIRCLE,
@@ -83,15 +90,27 @@
               fillOpacity: 1,
               scale: 5
               };
+              if(map.getBounds().contains(snapChild.val().geolocation.location)){
+                fullCount++;
+              }
             }
+            
             var marker = new google.maps.Marker({
             position: snapChild.val().geolocation.location,//{lat: parseFloat(snapChild.val().lat), lng: parseFloat(snapChild.val().long)},
             icon : icon,
             map: map
             });
             markers.push(marker);
+            document.querySelector('#ebins').innerHTML = `Number of empty bins: ${emptyCount}`;
+            document.querySelector('#fbins').innerHTML = `Number of full bins: ${fullCount}`;
           });
+          map.addListener('zoom_changed', function() {
+            emptyCount = 0;
+            fullCount = 0;
+          });
+          
         });  
+        
       }
     
 </script>
@@ -101,3 +120,4 @@
    
 </body>
 </html>
+
