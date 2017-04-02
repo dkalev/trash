@@ -1,0 +1,70 @@
+{
+  "bins" : {
+    "18:fe:34:d7:6a:6" : {
+      "geolocation" : {
+        "accuracy" : 15.4170861,
+        "location" : {
+          "lat" : 51.5203998,
+          "lng" : -0.0876804
+        }
+      },
+      "isEmpty" : true,
+      "lat" : 51.52,
+      "long" : -0.09
+    },
+    "Dummy 1" : {
+      "geolocation" : {
+        "accuracy" : 15.4470861,
+        "location" : {
+          "lat" : 51.5123998,
+          "lng" : -0.09
+        }
+      },
+      "isEmpty" : false
+    },
+    "Dummy 2" : {
+      "geolocation" : {
+        "accuracy" : 15.4470861,
+        "location" : {
+          "lat" : 51.5253998,
+          "lng" : -0.1
+        }
+      },
+      "isEmpty" : true
+    },
+	
+     "Dummy 3" : {
+      "geolocation" : {
+        "accuracy" : 15.4470861,
+        "location" : {
+          "lat" : 51.5273998,
+          "lng" : -0.10
+        }
+      },
+      "isEmpty" : false
+    },
+	
+     "Dummy 4" : {
+      "geolocation" : {
+        "accuracy" : 15.4470861,
+        "location" : {
+          "lat" : 51.5603998,
+          "lng" : -0.08
+        }
+      },
+      "isEmpty" : true
+    },
+	
+     "Dummy 5" : {
+      "geolocation" : {
+        "accuracy" : 15.4470861,
+        "location" : {
+          "lat" : 51.703998,
+          "lng" : -0.07
+        }
+      },
+      "isEmpty" : false
+    }
+  
+  
+  }	}

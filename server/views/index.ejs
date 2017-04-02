@@ -85,7 +85,7 @@
               };
             }
             var marker = new google.maps.Marker({
-            position: {lat: parseFloat(snapChild.val().lat), lng: parseFloat(snapChild.val().long)},
+            position: snapChild.val().geolocation.location,//{lat: parseFloat(snapChild.val().lat), lng: parseFloat(snapChild.val().long)},
             icon : icon,
             map: map
             });
