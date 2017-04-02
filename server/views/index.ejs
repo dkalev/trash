@@ -51,8 +51,14 @@
   var database = firebase.database();
   var emptyCount = 0;
   var fullCount = 0;
+  var markers = [];
     function updateM(map, snapshot) {
-         
+         if(markers.length != 0){
+          for (i = 0; i < markers.length; i++) { 
+            markers[i].setMap(null);
+            markers.pop(i);
+          }
+         }
          snapshot.forEach(function (snapChild) {
             
             if(snapChild.val().isEmpty){
@@ -84,6 +90,7 @@
               icon : icon,
               map: map
             });
+            markers.push(marker);
           });
             document.querySelector('#ebins').innerHTML = `Number of empty bins in the area: ${emptyCount}`;
             document.querySelector('#fbins').innerHTML = `Number of full bins in the area: ${fullCount}`;
@@ -98,6 +105,8 @@
         var starCountRef = database.ref('bins');
         var snap;
         starCountRef.on('value', function(snapshot) {
+            emptyCount = 0;
+            fullCount = 0;
             updateM(map, snapshot);
             snap = snapshot;
           });
