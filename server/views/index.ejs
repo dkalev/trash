@@ -48,28 +48,56 @@
 
   var database = firebase.database();
       function initMap() {
-        var uluru = {lat: -15.363, lng: 131.044};
+        var uluru = {lat: 51.52, lng: -0.086};
         var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 4,
+          zoom: 15,
           center: uluru
-        });        
+        });       
+        var markers = [];
         var starCountRef = database.ref('bins');
+
         starCountRef.on('value', function(snapshot) {
+          console.log('bruh');
+          console.log(markers.size);
+          if(markers.size != 0){
+            for(m in markers){
+              console.log(markers);
+              console.log(m.map);
+              m.map = null;
+            }
+          }
           snapshot.forEach(function (snapChild) {
-            new google.maps.Marker({
-            position: {lat: parseInt(snapChild.val().lat), lng: parseInt(snapChild.val().long)},
+            if(snapChild.val().isEmpty){
+              var icon = {
+              path: google.maps.SymbolPath.CIRCLE,
+              fillColor: 'green',
+              strokeColor: 'green',
+              fillOpacity: 1,
+              scale: 5
+              };
+            }else{
+              var icon = {
+              path: google.maps.SymbolPath.CIRCLE,
+              fillColor: 'red',
+              strokeColor: 'red',
+              fillOpacity: 1,
+              scale: 5
+              };
+            }
+            var marker = new google.maps.Marker({
+            position: {lat: parseFloat(snapChild.val().lat), lng: parseFloat(snapChild.val().long)},
+            icon : icon,
             map: map
             });
-            console.log(snapChild.val());
+            markers.push(marker);
           });
-        });
-   
+        });  
       }
     
 </script>
 <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh3Ji_jBNmp5cxuzTrqqofoq4vTc_K4y0&callback=initMap">
-</script>
+    </script>
    
 </body>
 </html>
