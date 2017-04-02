@@ -123,7 +123,7 @@ void setup() {
     Serial.println(longitude,6);
     }
   }
-
+  pinMode(LED_BUILTIN, OUTPUT);
 }
 
 int state = -1;
@@ -131,7 +131,13 @@ int nextState = -1;
 int count = 0;
 
 int classify(int reading){
-    return reading > 25 ? 1 : 0;
+    if(reading > 25){
+        digitalWrite(LED_BUILTIN, HIGH);
+        return 1;
+    } else {
+        digitalWrite(LED_BUILTIN, LOW);
+        return 0;
+    }
 }
 
 void heartbeat(int state){
