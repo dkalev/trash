@@ -51,25 +51,10 @@
   var database = firebase.database();
   var emptyCount = 0;
   var fullCount = 0;
-      function initMap() {
-        var uluru = {lat: 51.52, lng: -0.086};
-        var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 16,
-          center: uluru
-        });       
-        var markers = [];
-        var starCountRef = database.ref('bins');
-
-        starCountRef.on('value', function(snapshot) {
-          console.log(markers.size);
-          if(markers.size != 0){
-            for(m in markers){
-              console.log(markers);
-              console.log(m.map);
-              m.map = null;
-            }
-          }
-          snapshot.forEach(function (snapChild) {
+    function updateM(map, snapshot) {
+         
+         snapshot.forEach(function (snapChild) {
+            
             if(snapChild.val().isEmpty){
               var icon = {
               path: google.maps.SymbolPath.CIRCLE,
@@ -81,7 +66,6 @@
               if(map.getBounds().contains(snapChild.val().geolocation.location)){
                 emptyCount++;
               }
-              console.log(emptyCount);
             }else{
               var icon = {
               path: google.maps.SymbolPath.CIRCLE,
@@ -96,21 +80,32 @@
             }
             
             var marker = new google.maps.Marker({
-            position: snapChild.val().geolocation.location,//{lat: parseFloat(snapChild.val().lat), lng: parseFloat(snapChild.val().long)},
-            icon : icon,
-            map: map
+              position: snapChild.val().geolocation.location,
+              icon : icon,
+              map: map
             });
-            markers.push(marker);
-            document.querySelector('#ebins').innerHTML = `Number of empty bins: ${emptyCount}`;
-            document.querySelector('#fbins').innerHTML = `Number of full bins: ${fullCount}`;
           });
-          map.addListener('zoom_changed', function() {
+            document.querySelector('#ebins').innerHTML = `Number of empty bins in the area: ${emptyCount}`;
+            document.querySelector('#fbins').innerHTML = `Number of full bins in the area: ${fullCount}`;
+        }
+      function initMap() {
+        var uluru = {lat: 51.52, lng: -0.086};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 16,
+          center: uluru
+        });       
+          
+        var starCountRef = database.ref('bins');
+        var snap;
+        starCountRef.on('value', function(snapshot) {
+            updateM(map, snapshot);
+            snap = snapshot;
+          });
+        map.addListener('bounds_changed', function() {
             emptyCount = 0;
             fullCount = 0;
-          });
-          
-        });  
-        
+            updateM(map, snap);
+          });      
       }
     
 </script>
